@@ -8,7 +8,10 @@ import { MessagesModule } from "./messages/messages.module";
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot({ ttl: 60, limit: 30 }),
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60_000, limit: 30 }],
+    }),
+
     AuthModule,
     UsersModule,
     ChatsModule,

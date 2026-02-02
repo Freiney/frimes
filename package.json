@@ -14,5 +14,9 @@
     "build:web": "npm --workspace web run build",
     "build:server": "npm --workspace server run build",
     "lint": "npm --workspace server run lint && npm --workspace web run lint"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "^11.1.12",
+    "@nestjs/platform-socket.io": "^11.1.12"
   }
 }

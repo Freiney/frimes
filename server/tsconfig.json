@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
+    "target": "ES2021",
+    "moduleResolution": "node",
+
     "declaration": false,
     "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2019",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "skipLibCheck": true,
+
     "strict": true
   },
   "include": ["src", "prisma"]
