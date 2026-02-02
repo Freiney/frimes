@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChatType {
+  direct
+  group
+}
+
+enum MessageStatus {
+  sent
+  delivered
+  read
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  username      String         @unique
+  about         String?
+  avatarUrl     String?
+  lastSeenAt    DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[] @relation("UserRefreshTokens")
+  memberships   ChatMember[]
+  messages      Message[]
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  type      ChatType
+  title     String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  ChatMember[]
+  messages Message[]
+}
+
+model ChatMember {
+  id         String    @id @default(uuid())
+  chatId     String
+  userId     String
+  role       String    @default("member")
+  lastReadAt DateTime?
+
+  chat Chat @relation(fields: [chatId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([chatId, userId])
+}
+
+model Message {
+  id        String        @id @default(uuid())
+  chatId    String
+  senderId  String
+  body      String
+  status    MessageStatus @default(sent)
+  createdAt DateTime      @default(now())
+
+  chat        Chat         @relation(fields: [chatId], references: [id])
+  sender      User         @relation(fields: [senderId], references: [id])
+  attachments Attachment[]
+}
+
+model Attachment {
+  id        String @id @default(uuid())
+  messageId String
+  url       String
+  type      String
+  name      String
+
+  message Message @relation(fields: [messageId], references: [id])
+}
+
+model RefreshToken {
+  id        String @id @default(cuid())
+  tokenHash String
+  userId    String
+  user      User   @relation("UserRefreshTokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}

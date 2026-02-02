@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Frimes",
+    "slug": "frimes",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.svg",
+    "scheme": "frimes",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.svg",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.frimes.app",
+      "permissions": ["RECORD_AUDIO", "CAMERA"]
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}

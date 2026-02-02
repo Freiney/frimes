@@ -1,0 +1,25 @@
+{
+  "name": "frimes",
+  "private": true,
+  "workspaces": [
+    "server",
+    "web",
+    "mobile",
+    "shared"
+  ],
+  "scripts": {
+    "dev:server": "npm --workspace server run start:dev",
+    "dev:web": "npm --workspace web run dev",
+    "dev:mobile": "npm --workspace mobile run start",
+
+    "dev": "concurrently -n server,web -c green,cyan \"npm run dev:server\" \"npm run dev:web\"",
+    "dev:all": "concurrently -n server,web,mobile -c green,cyan,magenta \"npm run dev:server\" \"npm run dev:web\" \"npm run dev:mobile\"",
+
+    "build:web": "npm --workspace web run build",
+    "build:server": "npm --workspace server run build",
+    "lint": "npm --workspace server run lint && npm --workspace web run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

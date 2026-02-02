@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: frimes
+      POSTGRES_PASSWORD: frimes
+      POSTGRES_DB: frimes
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://frimes:frimes@postgres:5432/frimes
+      JWT_SECRET: dev_secret
+      WEB_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+  coturn:
+    image: instrumentisto/coturn
+    command: ["-n", "--log-file=stdout", "--min-port=49160", "--max-port=49200", "--user", "frimes:frimes", "--realm", "frimes.local"]
+    ports:
+      - "3478:3478"
+      - "3478:3478/udp"
+      - "49160-49200:49160-49200/udp"
+    profiles: ["turn"]
+
+volumes:
+  postgres_data:
