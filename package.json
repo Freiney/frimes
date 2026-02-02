@@ -1,0 +1,22 @@
+{
+  "name": "frimes",
+  "private": true,
+  "workspaces": [
+    "server",
+    "web",
+    "mobile",
+    "shared"
+  ],
+  "scripts": {
+    "dev:server": "npm --workspace server run start:dev",
+    "dev:web": "npm --workspace web run dev",
+    "dev:mobile": "npm --workspace mobile run start",
+    "build:web": "npm --workspace web run build",
+    "build:server": "npm --workspace server run build",
+    "lint": "npm --workspace server run lint && npm --workspace web run lint"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "^11.1.12",
+    "@nestjs/platform-socket.io": "^11.1.12"
+  }
+}
